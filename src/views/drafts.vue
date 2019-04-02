@@ -1,0 +1,162 @@
+<template>
+  <div id="allArticle">
+    <div class="breadcrumbOpt">
+      <a class="breadcrumbLeft" href="/">首页</a>
+      <a class="breadcrumbItem">草稿箱</a>
+    </div>
+    <div class="tableMainHeader">
+      <p class="lead"><em>草稿箱（drafts）</em>所有未发布保存为草稿的文章。</p>
+    </div>
+    <articleList :loading="tableLoading" :total="total" @prev='prev' @next='next' @pageSizeChange='pageSizeChange' :columns='columns' :tableData='tableData' @refresh='refresh' @del='del' @check='check' @edit='edit' refreshVisible='true'></articleList>
+  </div>
+</template>
+<script>
+  /*eslint-disable*/
+  import articleList from '../components/article/articleList.vue'
+  import webHttp from '../methods/http.js'
+  export default {
+    data() {
+      return {
+        total: 0,
+        tableLoading: false,
+        pageSize: 10,
+        columns: [
+          { label: '', key: 'id', width: 30, type: 'radio' },
+          { label: 'ID', key: 'articleId', width: 50 },
+          { label: '标题', key: 'title', width: 150 },
+          { label: '标签', key: 'tag', type: 'tag', width: 120 },
+          { label: '创建时间', key: 'date', width: 100 },
+          { label: '操作', key: 'operation', type: 'operation', width: 120 },
+        ],
+        tableData: []
+      }
+    },
+    components: {
+      articleList
+    },
+    mounted() {
+      this.tableLoading = true
+      webHttp.request({
+        url: '/api/articleDrafts',
+        method: 'POST',
+        data: {
+          pageNum: 1,
+          pageSize: this.pageSize
+        },
+        callback: (res) => {
+          this.tableLoading = false
+          this.tableData = res.list.data
+          this.total = res.list.totalCount
+        }
+      })
+    },
+    methods: {
+      refresh() {
+        this.tableData = []
+        this.tableLoading = true
+        this.total = 0
+        webHttp.request({
+          url: '/api/articleDrafts',
+          method: 'POST',
+          data: {
+            pageNum: 1,
+            pageSize: this.pageSize
+          },
+          callback: (res) => {
+            this.tableLoading = false
+            this.tableData = res.list.data
+            this.total = res.list.totalCount
+          }
+        })
+      },
+      check(row) { // 查看
+				this.$router.push({path: "/review",query: {article_id: row.articleId}})
+      },
+      edit(row) { // 编辑
+				this.$router.push({path: "/editArticle",query: {article_id: row.articleId}})
+      },
+      del(row) { // 删除
+        this.tableLoading = true
+        webHttp.request({
+          url: '/api/articleDel',
+          method: 'POST',
+          data: {
+            articleId: row.articleId
+          },
+          callback: (res) => {
+            this.tableLoading = false
+            if(res.success){
+              this.tableData = res.list.data
+              this.total = res.list.totalCount
+              this.$notify.success({// 删除成功
+                title: '提示',
+                message: '删除成功！',
+                duration: 2000
+              })
+            } else {
+              this.$notify.error({// 删除失败
+                title: '提示',
+                message: '删除失败！',
+                duration: 2000
+              })
+            }
+          }
+        })
+      },
+      prev(currentPage) {// 上一页
+        this.tableLoading = true
+        webHttp.request({
+          url: '/api/articleDrafts',
+          method: 'POST',
+          data: {
+            pageNum: currentPage,
+            pageSize: this.pageSize
+          },
+          callback: (res) => {
+            this.tableLoading = false
+            this.tableData = res.list.data
+            this.total = res.list.totalCount
+          }
+        })
+      },
+      next(currentPage) {// 下一页
+        this.tableLoading = true
+        webHttp.request({
+          url: '/api/articleDrafts',
+          method: 'POST',
+          data: {
+            pageNum: currentPage,
+            pageSize: this.pageSize
+          },
+          callback: (res) => {
+            this.tableLoading = false
+            this.tableData = res.list.data
+            this.total = res.list.totalCount
+          }
+        })
+      },
+      pageSizeChange(pageSize) {// 每页显示条数
+        this.pageSize = pageSize
+        this.tableLoading = true
+        webHttp.request({
+          url: '/api/articleDrafts',
+          method: 'POST',
+          data: {
+            pageNum: 1,
+            pageSize: this.pageSize
+          },
+          callback: (res) => {
+            this.tableLoading = false
+            this.tableData = res.list.data
+            this.total = res.list.totalCount
+          }
+        })
+      },
+    }
+  }
+</script>
+<style lang='less'>
+  #allArticle{
+    width: 100%;
+  }
+</style>
