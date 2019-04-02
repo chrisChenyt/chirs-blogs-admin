@@ -19,7 +19,7 @@
 
 <script type="text/ecmascript-6">
   import LeftMenu from '../components/leftMenu.vue'
-  import TopMenu from '../components/TopMenu.vue'
+  import TopMenu from '../components/topMenu.vue'
   export default {
     data(){
       return{
