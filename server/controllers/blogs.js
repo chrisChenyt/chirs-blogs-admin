@@ -65,6 +65,18 @@ const workArticle = async function (ctx) {
   }
 }
 
+const searchArticle = async function (ctx) {
+  const data = ctx.request.body // post过来的数据存在request.body里
+  let list = await articleModel.searchArticle(data.pageNum,data.pageSize,data.title) // 通过await “同步”地返回查询结果
+  const sort = await articleModel.articlePv(1,5)
+  const recommend = await articleModel.articleCommentNum(1,6)
+  ctx.body = {
+    list,
+    sort,
+    recommend
+  }
+}
+
 const articleShow = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
   let curId = data.articleId,
@@ -276,5 +288,6 @@ module.exports =  {
   createPv,
   captcha,
   userLogin,
-  register
+  register,
+  searchArticle
 }

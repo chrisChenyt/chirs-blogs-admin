@@ -62,6 +62,7 @@
 </script>
 <style lang = "less">
 	.article-review{
+		background: #fff;
 		box-sizing: border-box;
 		padding: 20px;
 		color: #404040;

@@ -170,6 +170,28 @@ const articleListFindType = async function (pageNum,pageSize,articleType,order,a
   return articleList
 }
 
+// 按标题模糊查询文章
+const searchArticle = async function (pageNum,pageSize,articleTitle) {
+  //  参数 pageNum 就是当前是第几页
+  //  参数 pageSize 是每次查询几条数据
+  let offset = (pageNum - 1) * pageSize;
+  const articleList = await Article.findAndCountAll({
+    limit: parseInt(pageSize),
+    offset,
+    order: [['date', 'DESC']],
+    where: {
+      publish: 'true',
+      title: {$like: '%'+articleTitle+'%'}
+    },
+  }).then(res => {
+    let result = {};
+    result.data = res.rows;
+    result.totalCount = res.count;
+    return result;
+  });
+  return articleList
+}
+
 // 查看文章
 const articleReview = async function (articleId) {
   const article = await Article.findOne({
@@ -329,5 +351,6 @@ module.exports =  {
   articleLikeNum,
   pv,
   likeNum,
-  commentNum
+  commentNum,
+  searchArticle
 }

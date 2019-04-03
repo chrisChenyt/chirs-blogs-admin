@@ -20,34 +20,18 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.CHAR(200),
       allowNull: true
     },
-    state: {
-      type: DataTypes.CHAR(10),
-      allowNull: true
-    },
-    rule: {
-      type: DataTypes.CHAR(10),
-      allowNull: true
-    },
     password: {
       type: DataTypes.CHAR(128),
-      allowNull: true
-    },
-    user_photo: {
-      type: DataTypes.STRING,
       allowNull: true
     },
     qq: {
       type: DataTypes.CHAR(20),
       allowNull: true
     },
-    mailbox: {
+    mail: {
       type: DataTypes.CHAR(50),
       allowNull: true
-    },
-    introduce: {
-      type: DataTypes.CHAR(20),
-      allowNull: true
-    },
+    }
   }, {
     tableName: 'user'// 表名
   });

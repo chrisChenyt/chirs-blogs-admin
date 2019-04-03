@@ -4,7 +4,7 @@
     <div class="nav">
       <div class="global-logo">
         <img src="../assets/head.jpeg">
-        <span>cweb后台管理系统</span>
+        <span>blogs后台管理系统</span>
       </div>
       <TopMenu @goSetPass="goSetPass"></TopMenu>
     </div>

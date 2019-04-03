@@ -11,7 +11,7 @@
         <!-- </transition> -->
       </li>
       <li class="nav-item" @mouseover="onMouseover(2)" @mouseout="onMouseout(2)">
-        <a href="#">cweb后台管理系统</a>
+        <a href="#">blogs后台管理系统</a>
         <!-- <transition name="fade"> -->
           <ul class="nav-top-hide" v-show="companyFlag">
             <li @click="removeSel"><a href="javascript:void(0);"><span class="icon icon-lock"></span>密码管理</a></li>

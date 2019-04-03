@@ -4,8 +4,7 @@ const Sequelize = require('sequelize'); // 引入sequelize
 // const blogs = new Sequelize('mysql://root:chenyutong123@localhost/blogs',{
 const blogs = new Sequelize('mysql://chenyutong:chenyutong123@39.107.236.111/blogs',{
   define: {
-    timestamps: false, // 取消Sequelzie自动给数据表加入时间戳（createdAt以及updatedAt）
-    dialect: 'sqlite', storage: ':memory:' // 弃用警告
+    timestamps: false // 取消Sequelzie自动给数据表加入时间戳（createdAt以及updatedAt）
   }
 })
 

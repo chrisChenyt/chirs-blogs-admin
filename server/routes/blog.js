@@ -14,6 +14,8 @@ router.post('/articleList', article.articleList) // 文章列表
       .post('/lifeArticle', blogs.lifeArticle) // 生活感悟文章页
       .post('/articleShow', blogs.articleShow) // 文章详情
 
+      .post('/searchArticle', blogs.searchArticle) // 搜索文章
+
       .post('/commentList', blogs.commentList) // 文章评论列表
       .post('/leaveComment', blogs.leaveComment) // 新建文章评论
       .post('/commentReply', blogs.commentReply) // 评论回复

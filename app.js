@@ -19,7 +19,7 @@ const ueditor = require('koa2-ueditor')
 router.all('/app/ueditor/UE', ueditor(['static',{
   "imageAllowFiles": [".png", ".jpg", ".jpeg"],
   "imagePathFormat": "/upload/img/{yyyy}{mm}{dd}_{rand:6}",
-  "imageUrlPrefix": "/static"
+  "imageUrlPrefix": "http://blogs-erp.cweb.fun/static"
 }]))
 
 app.use(koaBodyparser({
