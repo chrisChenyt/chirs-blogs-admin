@@ -202,6 +202,18 @@ const articleReview = async function (articleId) {
   return article
 }
 
+// 查看文章(已发布)
+const articleFind = async function (articleId) {
+  const article = await Article.findOne({
+    where: {
+      articleId: articleId,
+      publish: 'true'
+    }
+  })
+  return article
+}
+
+
 // 删除文章
 const articleDel = async function (articleId) {
   await Article.destroy({
@@ -343,6 +355,7 @@ module.exports =  {
   articleSave,
   draftsPublish,
   articleReview,
+  articleFind,
   articleDrafts,
   articlePv,
   articleListType,

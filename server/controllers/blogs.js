@@ -82,18 +82,18 @@ const articleShow = async function (ctx) {
   let curId = data.articleId,
       nextId = parseInt(curId)+1,
       preId = parseInt(curId)-1
-  let article = await articleModel.articleReview(curId)
+  let article = await articleModel.articleFind(curId)
   let pvNum = parseInt(article.pv)+1
   // 更新阅读量
   await articleModel.pv(pvNum,curId)
   let pre_next = {}
-  pre_next.next = await articleModel.articleReview(nextId)
-  pre_next.pre = await articleModel.articleReview(preId)
+  pre_next.next = await articleModel.articleFind(nextId)
+  pre_next.pre = await articleModel.articleFind(preId)
   const sort = await articleModel.articlePv(1,5)
   const thinklike = await articleModel.articleLikeNum(1,8)
   const recommend = await articleModel.articleCommentNum(1,6)
   const comment = await commentModel.commentListId(1,8,data.articleId)
-  const list = await articleModel.articleReview(curId)
+  const list = await articleModel.articleFind(curId)
   ctx.body = {
     list,
     pre_next,
