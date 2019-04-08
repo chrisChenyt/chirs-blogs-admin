@@ -34,7 +34,8 @@ const articlePv = async function (pageNum,pageSize) {
     order: [['pv', 'DESC']],
     where: {
       publish: 'true'
-    }
+    },
+    attributes: ['title','tag','tag1','tag2','articleId']
   }).then(res => {
     let result = res.rows;
     return result;
@@ -53,7 +54,8 @@ const articleCommentNum = async function (pageNum,pageSize) {
     order: [['commentNum', 'DESC']],
     where: {
       publish: 'true'
-    }
+    },
+    attributes: ['title','tag','tag1','tag2','articleId']
   }).then(res => {
     let result = res.rows;
     return result;
@@ -71,7 +73,8 @@ const articleLikeNum = async function (pageNum,pageSize) {
     order: [['likeNum', 'DESC']],
     where: {
       publish: 'true'
-    }
+    },
+    attributes: ['title','tag','tag1','tag2','articleId']
   }).then(res => {
     let result = res.rows;
     return result;
@@ -136,6 +139,7 @@ const articleListType = async function (pageNum,pageSize,articleType,order) {
       publish: 'true',
       type: articleType
     },
+    attributes: ['title','tag','tag1','tag2','articleId','abstract','date']
   }).then(res => {
     let result = {};
     result.data = res.rows;

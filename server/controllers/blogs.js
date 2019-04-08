@@ -3,12 +3,13 @@ const commentModel = require('../models/commentModel');
 const msgModel = require('../models/msgModel');
 const likeModel = require('../models/likeModel');
 const pvModel = require('../models/pvModel');
+const blogModel = require('../models/blogsModel');
 const captchapng  = require( 'captchapng');
 const user = require('../models/user.js');
 
 const index = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
-  const list = await articleModel.articleList(data.pageNum,data.pageSize) // 通过await “同步”地返回查询结果
+  const list = await blogModel.articleList(data.pageNum,data.pageSize) // 通过await “同步”地返回查询结果
   const sort = await articleModel.articlePv(1,5)
   let tabList = {}
   tabList.tech = await articleModel.articleListType(1,5,"tech","commentNum")
