@@ -36,6 +36,16 @@ const articleDel = async function (ctx) {
   }
 }
 
+const draftsDel = async function (ctx) {
+  const data = ctx.request.body // post过来的数据存在request.body里
+  const success = await articleModel.articleDel(data.articleId)
+  let list = await articleModel.articleDrafts(1,10) // 通过await “同步”地返回查询结果
+  ctx.body = {
+    success,
+    list
+  }
+}
+
 const articleCreate = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
   const success = await articleModel.articleCreate(data)
@@ -79,6 +89,7 @@ const articleReview = async function (ctx) {
 module.exports =  {
   articleList,
   articleDel,
+  draftsDel,
   articleCreate,
   draftsCreate,
   articleSave,

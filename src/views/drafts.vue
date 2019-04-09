@@ -78,7 +78,7 @@
       del(row) { // 删除
         this.tableLoading = true
         webHttp.request({
-          url: '/api/articleDel',
+          url: '/api/draftsDel',
           method: 'POST',
           data: {
             articleId: row.articleId

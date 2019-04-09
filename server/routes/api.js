@@ -18,6 +18,7 @@ router.post('/userList', auth.userList) //用户列表(all)
 
       .post('/articleList', article.articleList) // 文章列表
       .post('/articleDel', article.articleDel) // 删除文章
+      .post('/draftsDel', article.draftsDel) // 删除草稿
       .post('/articleCreate', article.articleCreate) // 发表文章（新建文章）
       .post('/draftsCreate', article.draftsCreate) // 新建草稿
       .post('/articleSave', article.articleSave) // 保存草稿
