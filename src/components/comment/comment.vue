@@ -47,7 +47,7 @@
                 <span>{{ props.row.name }}</span>
               </el-form-item>
               <el-form-item label="留言：" class="commentCon">
-                <span>{{ props.row.content }}</span>
+                <pre><span v-html='props.row.content.replace(/img\/emoji/g,"static/img/emoji")'></span></pre>
               </el-form-item>
               <el-form-item label="时间：" class="commentCon">
                 <span>{{ props.row.date }}</span>
@@ -58,7 +58,7 @@
                 <ul v-else>
                   <li class="replyItem" v-for="replyItem in props.row.reply">
                     <span class="replyName">{{replyItem.name}} @ {{replyItem.aite}}：</span>
-                    <span class="replyItemCon">{{replyItem.content}}</span>
+                    <pre><span v-html='replyItem.content.replace(/img\/emoji/g,"static/img/emoji")'></span></pre>
                     <span class="replyItemTime">{{ replyItem.date }}</span>
                     <i size="mini" class="el-icon-delete" @click="deleteReply(props.row,replyItem._id)"></i>
                   </li>
@@ -78,6 +78,9 @@
               <el-tooltip content="删除" placement="top" effect="light">
                 <el-button type="danger"size="mini" icon="el-icon-delete"circle @click.stop="handleDelete(scope.row)"></el-button>
               </el-tooltip>
+            </div>
+            <div v-if="item.type=='content'">
+              <pre><span v-html='tableData[scope.$index][item.key].replace(/img\/emoji/g,"static/img/emoji")'></span></pre>
             </div>
             <div class="cellCon" v-else>{{tableData[scope.$index][item.key]}}</div>
           </template>
@@ -134,7 +137,18 @@
       }
     },
     methods: {
+      encodeHtml(str){
+          var encodedStr = "" ;
+          if (str=="") return encodedStr ;
+          else {
+              for (var i = 0 ; i < str.length ; i ++){
+                  encodedStr += "&#" + str.substring(i, i + 1).charCodeAt().toString(10) + ";" ;
+              }
+          }
+          return encodedStr ;
+      },
       refresh() {// 刷新
+        this.currentPage = 1
         this.$emit('refresh')
       },
       searchTitle() {

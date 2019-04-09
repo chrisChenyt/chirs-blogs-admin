@@ -5,7 +5,8 @@ const likeModel = require('../models/likeModel');
 const pvModel = require('../models/pvModel');
 const blogModel = require('../models/blogsModel');
 const captchapng  = require( 'captchapng');
-const user = require('../models/user.js');
+const user = require('../models/user');
+const bcrypt = require('bcryptjs');
 
 const index = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
@@ -236,7 +237,7 @@ const userLogin = async function (ctx) {
   }
 }
 
-// 登录账户
+// 注册账户
 const register = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
   const userInfo = await user.getUserInfo(data.phone)
@@ -248,7 +249,7 @@ const register = async function (ctx) {
     }
   } else {
     const userInfoName = await user.getUserInfoByname(data.name)
-    if(userInfoName!= ''){
+    if(userInfoName!= null){
       ctx.body = {
         success: false,
         errorType: 'name',
@@ -256,11 +257,21 @@ const register = async function (ctx) {
       }
     }else{
       if(ctx.session.captcha == data.imgCode){// 与session中的验证码对比
+        // 设置默认密码 123456
+        const defaultPwd = '123456';
+        //生成salt的迭代次数
+        const saltRounds = 10;
+        //随机生成salt
+        const salt = bcrypt.genSaltSync(saltRounds);
+        //获取hash值
+        var hash = bcrypt.hashSync(defaultPwd, salt);
+        //把hash值赋值给password变量
+        data.defaultPwd = hash;
         const success = await user.register(data)
-        const user = await user.getUserInfo(data.phone)
+        const userinfo = await user.getUserInfo(data.phone)
         ctx.body = {
           success,
-          userInfo: user
+          userInfo: userinfo
         }
       }else{
         ctx.body = {

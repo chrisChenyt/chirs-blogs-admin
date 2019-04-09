@@ -24,7 +24,7 @@
         columns: [
           { label: '序号', key: 'commentId', width: 30 },
           { label: '用户名', key: 'name', width: 50 },
-          { label: '留言内容', key: 'content', width: 120 },
+          { label: '留言内容', key: 'content', type: 'content', width: 120 },
           { label: '时间', key: 'date', width: 100 },
           { label: '操作', key: 'operation', type: 'operation', width: 100 },
         ],

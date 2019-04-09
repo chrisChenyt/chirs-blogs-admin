@@ -13,8 +13,14 @@ const createPv = async function (data) {
 }
 
 // 查询未读浏览
-const getPvByRead = async function () {
+const getPvByRead = async function (pageNum,pageSize) {
+  //  参数 pageNum 就是当前是第几页
+  //  参数 pageSize 是每次查询几条数据
+  let offset = (pageNum - 1) * pageSize;
   const pv = await Pv.findAndCountAll({
+    limit: parseInt(pageSize),
+    offset,
+    order: [['id', 'DESC']],
     where: {
       read: 'false'
     }

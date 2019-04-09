@@ -119,6 +119,7 @@
         this.row = row
       },
       refresh() {// 刷新
+        this.currentPage = 1
         this.$emit('refresh')
       },
       handleCheck(row) {// 查看

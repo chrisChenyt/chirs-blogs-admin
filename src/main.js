@@ -116,12 +116,6 @@ let router = new Router({
           }
         },
         {
-          path: '/managerList',
-          name: 'managerList',
-          component:() => import(/* webpackChunkName: "index" */ '@/views/managerList'),
-          meta: { requireAuth: true }
-        },
-        {
           path: '/password',
           name: 'password',
           component:() => import(/* webpackChunkName: "index" */ '@/views/password'),

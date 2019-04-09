@@ -5,39 +5,12 @@
       <a class="breadcrumbItem">用户列表</a>
     </div>
     <div class="tableMainHeader">
-      <p class="lead"><em>用户列表（userList）</em>展示所有注册用户,普通用户可以查看用户基本信息,管理员可以查看用户基本信息并对账户进行操作。</p>
+      <p class="lead"><em>用户列表（userList）</em>展示所有注册用户基本信息。</p>
     </div>
-    <table-list ref="tableList" :loading="tableLoading" :total="total" @searchPlanId='searchPhone' showPlanIdSearch='true' @prev='prev' @next='next' @pageSizeChange='pageSizeChange' @filterChange="filterChange" :columns='columns' :tableData='tableData' @refresh='refresh' @repay='repay' refreshVisible='true' repayVisible='true'></table-list>
+    <table-list ref="tableList" :loading="tableLoading" :total="total" @searchPhone='searchPhone' showPlanIdSearch='true' @prev='prev' @next='next' @pageSizeChange='pageSizeChange' :columns='columns' :tableData='tableData' @refresh='refresh' refreshVisible='true'></table-list>
     <div class="tipsCon">
-      <p class="tips">* 提示：用户状态标明为“禁用”，请自行联系 管理员 授权，常规渠道有<a>微信</a>或者<a>QQ</a>。</p>
-      <p class="tips">* 如果 管理员 操作后状态仍为“禁用”，请自行联系 作者 授权，常规渠道有<a>微信</a>或者<a>QQ</a>。</p>
+      <p class="tips">* 提示：如果有疑问，请自行联系 管理员，常规渠道有<a>微信</a>或者<a>QQ</a>。</p>
     </div>
-    <el-dialog
-      title="账户管理"
-      :visible.sync="dialogVisible"
-      width="500px">
-      <el-form ref="manageForm" :model="manageForm" :disabled="true" label-width="120px">
-        <el-form-item label="用户手机号">
-          <el-input v-model="manageForm.phone"></el-input>
-        </el-form-item>
-      </el-form>
-      <el-form ref="manageForm" :model="manageForm" :disabled="formDisable" label-width="120px">
-        <el-form-item label="账户状态">
-          <el-switch v-model="manageForm.state"></el-switch>
-        </el-form-item>
-        <el-form-item label="权限等级">
-          <el-radio-group v-model="manageForm.rule">
-            <el-radio label="普通用户"></el-radio>
-            <el-radio label="管理员"></el-radio>
-            <el-radio label="超级管理员"></el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitChange">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -76,32 +49,13 @@
             width: 120
           },
           {
-            label: '状态',
-            key: 'state',
-            width: 100,
-            dateFilters: [
-              {text: '禁用', value: '0'},
-              {text: '正常', value: '1'},
-            ]
-          },
-          {
-            label: '权限等级',
-            key: 'rule',
-            width: 100,
-          },
-          {
             label: '注册时间',
             key: 'register_time',
             type: 'normal',
             width: 120
           }
         ],
-        tableData: [],
-        manageForm: {
-          state: true,
-          phone: '',
-          rule: ''
-        }
+        tableData: []
       }
     },
     components: {
@@ -124,72 +78,14 @@
       })
     },
     methods: {
-      refresh() {
-        console.log('刷新')
-        window.location.reload()
-      },
-      repay(row) {
-        console.log('账户管理',row)
-        webHttp.request({
-          url: '/api/getUserInfo',
-          method: 'POST',
-          data: {
-            phone: localStorage.getItem('phone')
-          },
-          callback: (res) => {
-            this.dialogVisible = true
-            this.manageForm.phone = row.phone
-            if(res.list.rule == '管理员' || res.list.rule == '超级管理员' || res.list.state == '正常'){
-              this.formDisable = false
-            }else{
-              this.formDisable = true
-            }
-            if(row.state == '正常'){
-              this.manageForm.state = true
-            } else {
-              this.manageForm.state = false
-            }
-            this.manageForm.rule = row.rule
-          }
-        })
-      },
-      submitChange() {// 确定权限
-        let stateText;
-        if(this.manageForm.state){
-          stateText = '正常'
-        } else {
-          stateText = '禁用'
-        }
-        console.log(this.manageForm.phone)
-        webHttp.request({
-            url: '/api/changeUserInfo',
-            method: 'POST',
-            data: {
-              phone: this.manageForm.phone,
-              state: stateText,
-              rule: this.manageForm.rule
-            },
-            callback: (res) => {
-              // 取消选中
-              this.$refs.tableList.radio = ''
-              this.$refs.tableList.canRepay = false
-              
-              this.dialogVisible = false
-              this.tableData = res.list.data
-              this.total = res.list.totalCount
-            }
-        })
-      },
-      filterChange(key,value) {// key:columns定义的key,value:选中的value
-        console.log(key,value)
+      refresh() {// 刷新
         this.tableLoading = true
         webHttp.request({
-          url: '/api/userListState',
+          url: '/api/userList',
           method: 'POST',
           data: {
             pageNum: 1,
-            pageSize: this.pageSize,
-            state: value
+            pageSize: this.pageSize
           },
           callback: (res) => {
             this.tableLoading = false
@@ -266,7 +162,7 @@
               this.total = res.list.totalCount
             }
         })
-      },
+      }
     }
   }
 </script>

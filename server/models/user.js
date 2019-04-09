@@ -2,6 +2,8 @@ const db  = require('../config/db.js');
 const userModel = '../schema/user.js' // 引入user的表结构
 const blogsDb = db.blogs // 引入数据库
 
+import util from '../../src/methods/util';
+
 
 const User = blogsDb.import(userModel) // 用sequelize的import方法引入表结构，实例化了User。
 
@@ -9,7 +11,9 @@ const User = blogsDb.import(userModel) // 用sequelize的import方法引入表�
 const register = async function (data) {
   await User.create({
     phone: data.phone,
-    name: data.name
+    name: data.name,
+    password: data.defaultPwd,
+    register_time: util.getNowFormatDate('yyyy-MM-dd HH:mm')
   })
   return true
 }
@@ -109,7 +113,7 @@ const userList = async function (pageNum,pageSize) {
   const userList = await User.findAndCountAll({
     limit: parseInt(pageSize),
     offset,
-    attributes: ['user_id', 'name', 'phone', 'state', 'register_time', 'rule'] // 只需返回这三个字段的结果即可
+    attributes: ['user_id', 'name', 'phone', 'register_time'] // 只需返回这三个字段的结果即可
   }).then(res => {
     let result = {};
     result.data = res.rows;
@@ -129,7 +133,7 @@ const userListPhone = async function (pageNum,pageSize,phone) {
     },
     limit: parseInt(pageSize),
     offset,
-    attributes: ['user_id', 'name', 'phone', 'state', 'register_time', 'rule'] // 只需返回这三个字段的结果即可
+    attributes: ['user_id', 'name', 'phone', 'register_time'] // 只需返回这三个字段的结果即可
   }).then(res => {
     let result = {};
     result.data = res.rows;
@@ -148,7 +152,7 @@ const userListState = async function (pageNum,pageSize,state) {
     },
     limit: parseInt(pageSize),
     offset,
-    attributes: ['user_id', 'name', 'phone', 'state', 'register_time', 'rule'] // 只需返回这三个字段的结果即可
+    attributes: ['user_id', 'name', 'phone', 'register_time'] // 只需返回这三个字段的结果即可
   }).then(res => {
     let result = {};
     result.data = res.rows;
@@ -170,7 +174,7 @@ const userListManager = async function (pageNum,pageSize) {
     },
     limit: parseInt(pageSize),
     offset,
-    attributes: ['user_id', 'name', 'phone', 'state', 'register_time', 'rule'] // 只需返回这三个字段的结果即可
+    attributes: ['user_id', 'name', 'phone', 'register_time'] // 只需返回这三个字段的结果即可
   }).then(res => {
     let result = {};
     result.data = res.rows;
@@ -192,7 +196,7 @@ const userListManagerPhone = async function (pageNum,pageSize,phone) {
     },
     limit: parseInt(pageSize),
     offset,
-    attributes: ['user_id', 'name', 'phone', 'state', 'register_time', 'rule'] // 只需返回这三个字段的结果即可
+    attributes: ['user_id', 'name', 'phone', 'register_time'] // 只需返回这三个字段的结果即可
   }).then(res => {
     let result = {};
     result.data = res.rows;

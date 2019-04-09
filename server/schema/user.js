@@ -31,6 +31,10 @@ module.exports = function(sequelize, DataTypes) {
     mail: {
       type: DataTypes.CHAR(50),
       allowNull: true
+    },
+    register_time: {
+      type: DataTypes.CHAR(50),
+      allowNull: true
     }
   }, {
     tableName: 'user'// 表名

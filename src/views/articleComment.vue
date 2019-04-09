@@ -25,7 +25,7 @@
           { label: 'ID', key: 'commentId', width: 30 },
           { label: '文章标题', key: 'title', width: 80 },
           { label: '昵称', key: 'name', width: 50 },
-          { label: '评论内容', key: 'content', width: 120 },
+          { label: '评论内容', key: 'content', type: 'content', width: 120 },
           { label: '时间', key: 'date', width: 100 },
           { label: '操作', key: 'operation', type: 'operation', width: 100 },
         ],

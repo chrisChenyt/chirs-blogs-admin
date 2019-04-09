@@ -115,11 +115,6 @@
             title: '用户列表',
             pathName: 'userList',
             icon: 'el-icon-menu',
-          },
-          {
-            title: '管理员列表',
-            pathName: 'managerList',
-            icon: 'el-icon-document',
           }
         ]
       }

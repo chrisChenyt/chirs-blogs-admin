@@ -102,7 +102,7 @@
                                     message: '登录成功！',
                                     duration: 2000
                                 })
-                                this.$router.push({name: 'userList'}) // 进入首页，登录成功
+                                this.$router.push({name: 'newMsg'}) // 进入首页，登录成功
                             }else{
                                 this.$notify.error({
                                     title: '提示',

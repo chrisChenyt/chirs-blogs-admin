@@ -5,24 +5,8 @@
       <div v-show="refreshVisible" v-on:click="refresh()" class="btn">
         <span class="icon icon-refresh"></span>
       </div>
-      <!-- 新增按钮 -->
-      <div v-show="createVisible" v-on:click="create()" class="btn">
-        <span class="icon icon-create"></span>
-        <span class="text">新增</span>
-      </div>
-      <!-- 还款按钮 -->
-      <div v-show="repayVisible" v-on:click="repay()" class="btn" :class="{'btn-forbidden': canRepay == false}">
-        <span class="icon icon-flag"></span>
-        <span class="text">账户管理</span>
-      </div>
-      <!-- 更多操作 -->
-      <v-dropdown v-show="moreVisible" @moreTap='moreTap'></v-dropdown>
       <!-- 手机号搜索输入框 -->
       <el-input placeholder="请输入手机号" @keyup.enter.native="searchPhone" @blur="searchPhone" v-model="phone" v-if="showPhoneSearch" class="toolbar-input-con">
-        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-      </el-input>
-      <!-- 还款计划id搜索输入框 -->
-      <el-input placeholder="请输入手机号" @keyup.enter.native="searchPlanId" @blur="searchPlanId" v-model="planId" v-if="showPlanIdSearch" class="toolbar-input-con">
         <i slot="prefix" class="el-input__icon el-icon-search"></i>
       </el-input>
       <!-- 分页组合 -->
@@ -52,7 +36,6 @@
         element-loading-text="拼命加载中"
         element-loading-spinner="el-icon-loading"
         :data="tableData"
-        @filter-change="filterChange"
         style="width: 100%">
         <el-table-column :render-header="item.renderHeader" :column-key="item.key" show-overflow-tooltip :filter-multiple='false' filter-placement="bottom-start" :filters="item.dateFilters" :align="item.align" :label="item.label" :prop="item.key" :min-width="item.width" v-for="(item, index) in columns" :key="index">
           <template slot-scope="scope">
@@ -69,7 +52,6 @@
 </template>
 <script>
   /*eslint-disable*/
-  import vDropdown from '../components/v-dropdown.vue'
   export default {
     data() {
       return {
@@ -104,9 +86,6 @@
       showPhoneSearch: false,
       showPlanIdSearch: false
     },
-    components: {
-      vDropdown
-    },
     mounted() {
     },
     computed: {
@@ -128,46 +107,16 @@
       }
     },
     methods: {
-      filterChange(filters) {// 筛选
-        // 取消选中
-        this.radio = ''
-        this.canRepay = false
-
-        for(let key in filters){
-          let value = filters[key][0]
-          if(value === undefined){
-            value = ''
-          }
-          this.$emit('filterChange',key,value)
-        }
-      },
       selectRow(row){
         this.canRepay = true
         this.row = row
       },
       refresh() {// 刷新
+        this.currentPage = 1
         this.$emit('refresh')
-      },
-      repay() {// 还款
-        if(this.canRepay) {
-          this.$emit('repay',this.row)
-        }
-      },
-      create() {// 新增
-        this.$emit('create')
-      },
-      moreTap(id) {// 更多操作
-        this.$emit('moreTap',id)
       },
       searchPhone() {
         this.$emit('searchPhone',this.phone)
-      },
-      searchPlanId() {
-        // 取消选中
-        this.radio = ''
-        this.canRepay = false
-
-        this.$emit('searchPlanId',this.planId)
       },
       pageSizeChange() {
         // 取消选中
