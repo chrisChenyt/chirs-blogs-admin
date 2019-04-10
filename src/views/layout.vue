@@ -65,6 +65,11 @@
                 icon: 'el-icon-document',
               },
               {
+                title: 'Nginx',
+                pathName: 'nginx',
+                icon: 'el-icon-document',
+              },
+              {
                 title: 'React',
                 pathName: 'react',
                 icon: 'el-icon-document',
