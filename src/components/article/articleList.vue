@@ -41,7 +41,7 @@
             <div v-if="item.type == 'tag'">
               <template v-for="(tagItem,tagIndex) in tableData[scope.$index][item.key]">
                 <el-tag size="mini" v-if="tagItem == 'JavaScript' || tagItem == 'life'" :key="tagIndex">{{tagItem}}</el-tag>
-                <el-tag size="mini" v-if="tagItem == 'Vue'" type="success" :key="tagIndex">{{tagItem}}</el-tag>
+                <el-tag size="mini" v-if="tagItem == 'Vue' || tagItem == 'nginx'" type="success" :key="tagIndex">{{tagItem}}</el-tag>
                 <el-tag size="mini" v-if="tagItem == 'CSS' || tagItem == 'work'" type="info" :key="tagIndex">{{tagItem}}</el-tag>
                 <el-tag size="mini" v-if="tagItem == 'webpack' || tagItem == 'react'" type="warning" :key="tagIndex">{{tagItem}}</el-tag>
                 <el-tag size="mini" v-if="tagItem == 'nodejs' || tagItem == 'other' || tagItem == 'html'" type="danger" :key="tagIndex">{{tagItem}}</el-tag>

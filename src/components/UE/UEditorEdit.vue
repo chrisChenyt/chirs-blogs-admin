@@ -77,7 +77,7 @@
         dialog: {show: false,info: ""},
         wating: {disabled: false,info: {u: "更新",s: "保存草稿", p: "发表"}},
         articleTags:[
-          "CSS","html","JavaScript","nodejs","Vue","webpack","React","work","life","other"
+          "CSS","html","JavaScript","nodejs","Vue","webpack","React","nginx","work","life","other"
         ],
         article: {}
       }
