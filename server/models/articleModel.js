@@ -23,6 +23,22 @@ const articleList = async function (pageNum,pageSize) {
   });
   return articleList
 }
+// 全部文章数量
+const articleListNum = async function (pageNum,pageSize) {
+  //  参数 pageNum 就是当前是第几页
+  //  参数 pageSize 是每次查询几条数据
+  let offset = (pageNum - 1) * pageSize;
+  const articleListNum = await Article.findAndCountAll({
+    limit: parseInt(pageSize),
+    offset,
+    where: {
+      publish: 'true'
+    }
+  }).then(res => {
+    return res.count;
+  });
+  return articleListNum
+}
 // 全部文章(前5浏览量)
 const articlePv = async function (pageNum,pageSize) {
   //  参数 pageNum 就是当前是第几页
@@ -217,6 +233,18 @@ const articleFind = async function (articleId) {
   return article
 }
 
+// 查看文章(已发布)
+const articleFindNext = async function (articleId) {
+  const article = await Article.findOne({
+    where: {
+      articleId: articleId,
+      publish: 'true'
+    },
+    attributes: ['title','tag','tag1','tag2','articleId']
+  })
+  return article
+}
+
 
 // 删除文章
 const articleDel = async function (articleId) {
@@ -352,6 +380,7 @@ const commentNum = async function (data) {
 
 module.exports =  {
   articleList,
+  articleListNum,
   articleListFind,
   articleDel,
   articleCreate,
@@ -360,6 +389,7 @@ module.exports =  {
   draftsPublish,
   articleReview,
   articleFind,
+  articleFindNext,
   articleDrafts,
   articlePv,
   articleListType,

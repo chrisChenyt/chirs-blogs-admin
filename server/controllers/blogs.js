@@ -7,17 +7,49 @@ const blogModel = require('../models/blogsModel');
 const captchapng  = require( 'captchapng');
 const user = require('../models/user');
 const bcrypt = require('bcryptjs');
-
+const redis = require("../config/redis");
+const expire = 60*60*24;// 设置redis过期时间为24小时
 const index = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
   const list = await blogModel.articleList(data.pageNum,data.pageSize) // 通过await “同步”地返回查询结果
-  const sort = await articleModel.articlePv(1,5)
+
+  let sort;// 点击排行
+  redis.get('sort').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      sort = await articleModel.articlePv(1,5)
+      redis.set('sort',JSON.stringify(sort),'EX', expire)
+    }else if(result==''){
+      sort = []
+    }else{
+      sort = JSON.parse(result)
+    }
+  })
+  let thinklike;// 猜你喜欢
+  redis.get('thinklike').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      thinklike = await articleModel.articleLikeNum(1,8)
+      redis.set('thinklike',JSON.stringify(thinklike),'EX', expire)
+    }else if(result==''){
+      thinklike = []
+    }else{
+      thinklike = JSON.parse(result)
+    }
+  })
+  let recommend;// 文章推荐
+  redis.get('recommend').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      recommend = await articleModel.articleCommentNum(1,6)
+      redis.set('recommend',JSON.stringify(recommend),'EX', expire)
+    }else if(result==''){
+      recommend = []
+    }else{
+      recommend = JSON.parse(result)
+    }
+  })
   let tabList = {}
   tabList.tech = await articleModel.articleListType(1,5,"tech","commentNum")
   tabList.work = await articleModel.articleListType(1,5,"work","commentNum")
   tabList.life = await articleModel.articleListType(1,5,"life","commentNum")
-  const thinklike = await articleModel.articleLikeNum(1,8)
-  const recommend = await articleModel.articleCommentNum(1,6)
   ctx.body = {
     list,
     sort,
@@ -29,14 +61,35 @@ const index = async function (ctx) {
 
 const techArticle = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
+  
+  let sort;// 点击排行
+  redis.get('sort').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      sort = await articleModel.articlePv(1,5)
+      redis.set('sort',JSON.stringify(sort),'EX', expire)
+    }else if(result==''){
+      sort = []
+    }else{
+      sort = JSON.parse(result)
+    }
+  })
+  let recommend;// 文章推荐
+  redis.get('recommend').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      recommend = await articleModel.articleCommentNum(1,6)
+      redis.set('recommend',JSON.stringify(recommend),'EX', expire)
+    }else if(result==''){
+      recommend = []
+    }else{
+      recommend = JSON.parse(result)
+    }
+  })
   let list = ''
   if(data.articleTag){
     list = await articleModel.articleListFindType(data.pageNum,data.pageSize,"tech","date",data.articleTag) // 通过await “同步”地返回查询结果
   } else{
     list = await articleModel.articleListType(data.pageNum,data.pageSize,"tech","date") // 通过await “同步”地返回查询结果
   }
-  const sort = await articleModel.articlePv(1,5)
-  const recommend = await articleModel.articleCommentNum(1,6)
   ctx.body = {
     list,
     sort,
@@ -46,9 +99,30 @@ const techArticle = async function (ctx) {
 
 const lifeArticle = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
+  
+  let sort;// 点击排行
+  redis.get('sort').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      sort = await articleModel.articlePv(1,5)
+      redis.set('sort',JSON.stringify(sort),'EX', expire)
+    }else if(result==''){
+      sort = []
+    }else{
+      sort = JSON.parse(result)
+    }
+  })
+  let recommend;// 文章推荐
+  redis.get('recommend').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      recommend = await articleModel.articleCommentNum(1,6)
+      redis.set('recommend',JSON.stringify(recommend),'EX', expire)
+    }else if(result==''){
+      recommend = []
+    }else{
+      recommend = JSON.parse(result)
+    }
+  })
   let list = await articleModel.articleListType(data.pageNum,data.pageSize,"life","date") // 通过await “同步”地返回查询结果
-  const sort = await articleModel.articlePv(1,5)
-  const recommend = await articleModel.articleCommentNum(1,6)
   ctx.body = {
     list,
     sort,
@@ -57,9 +131,30 @@ const lifeArticle = async function (ctx) {
 }
 const workArticle = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
+  
+  let sort;// 点击排行
+  redis.get('sort').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      sort = await articleModel.articlePv(1,5)
+      redis.set('sort',JSON.stringify(sort),'EX', expire)
+    }else if(result==''){
+      sort = []
+    }else{
+      sort = JSON.parse(result)
+    }
+  })
+  let recommend;// 文章推荐
+  redis.get('recommend').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      recommend = await articleModel.articleCommentNum(1,6)
+      redis.set('recommend',JSON.stringify(recommend),'EX', expire)
+    }else if(result==''){
+      recommend = []
+    }else{
+      recommend = JSON.parse(result)
+    }
+  })
   let list = await articleModel.articleListType(data.pageNum,data.pageSize,"work","date") // 通过await “同步”地返回查询结果
-  const sort = await articleModel.articlePv(1,5)
-  const recommend = await articleModel.articleCommentNum(1,6)
   ctx.body = {
     list,
     sort,
@@ -70,8 +165,31 @@ const workArticle = async function (ctx) {
 const searchArticle = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
   let list = await articleModel.searchArticle(data.pageNum,data.pageSize,data.title) // 通过await “同步”地返回查询结果
-  const sort = await articleModel.articlePv(1,5)
-  const recommend = await articleModel.articleCommentNum(1,6)
+  
+  let sort;// 点击排行
+  redis.get('sort').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      sort = await articleModel.articlePv(1,5)
+      redis.set('sort',JSON.stringify(sort),'EX', expire)
+    }else if(result==''){
+      sort = []
+    }else{
+      sort = JSON.parse(result)
+    }
+  })
+  let recommend;// 文章推荐
+  redis.get('recommend').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      recommend = await articleModel.articleCommentNum(1,6)
+      redis.set('recommend',JSON.stringify(recommend),'EX', expire)
+    }else if(result==''){
+      recommend = []
+    }else{
+      recommend = JSON.parse(result)
+    }
+  })
+  // const sort = await articleModel.articlePv(1,5)
+  // const recommend = await articleModel.articleCommentNum(1,6)
   ctx.body = {
     list,
     sort,
@@ -89,15 +207,48 @@ const articleShow = async function (ctx) {
   // 更新阅读量
   await articleModel.pv(pvNum,curId)
   let pre_next = {}
-  pre_next.next = await articleModel.articleFind(nextId)
-  pre_next.pre = await articleModel.articleFind(preId)
-  const sort = await articleModel.articlePv(1,5)
-  const thinklike = await articleModel.articleLikeNum(1,8)
-  const recommend = await articleModel.articleCommentNum(1,6)
+  pre_next.next = await articleModel.articleFindNext(nextId)
+  pre_next.pre = await articleModel.articleFindNext(preId)
+  const num = await articleModel.articleListNum(1,1)
+  
+  let sort;// 点击排行
+  redis.get('sort').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      sort = await articleModel.articlePv(1,5)
+      redis.set('sort',JSON.stringify(sort),'EX', expire)
+    }else if(result==''){
+      sort = []
+    }else{
+      sort = JSON.parse(result)
+    }
+  })
+  let thinklike;// 猜你喜欢
+  redis.get('thinklike').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      thinklike = await articleModel.articleLikeNum(1,8)
+      redis.set('thinklike',JSON.stringify(thinklike),'EX', expire)
+    }else if(result==''){
+      thinklike = []
+    }else{
+      thinklike = JSON.parse(result)
+    }
+  })
+  let recommend;// 文章推荐
+  redis.get('recommend').then(async function (result) {
+    if(result==null){// 从redis中获取排行为null时，请求mysql，然后存储到redis中
+      recommend = await articleModel.articleCommentNum(1,6)
+      redis.set('recommend',JSON.stringify(recommend),'EX', expire)
+    }else if(result==''){
+      recommend = []
+    }else{
+      recommend = JSON.parse(result)
+    }
+  })
   const comment = await commentModel.commentListId(1,8,data.articleId)
   const list = await articleModel.articleFind(curId)
   ctx.body = {
     list,
+    num,
     pre_next,
     sort,
     thinklike,
