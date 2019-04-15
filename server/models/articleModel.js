@@ -14,7 +14,8 @@ const articleList = async function (pageNum,pageSize) {
     order: [['date', 'DESC']],
     where: {
       publish: 'true'
-    }
+    },
+    attributes: ['articleId','title','abstract','tag','tag1','tag2','likeNum','pv','commentNum','date']
   }).then(res => {
     let result = {};
     result.data = res.rows;
