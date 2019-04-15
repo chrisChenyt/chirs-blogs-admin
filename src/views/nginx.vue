@@ -1,5 +1,5 @@
 <template>
-  <div id="articleNode">
+  <div id="articleNginx">
     <div class="breadcrumbOpt">
       <a class="breadcrumbLeft" href="/">首页</a>
       <a class="breadcrumbItem">全部文章</a>
@@ -163,7 +163,7 @@
   }
 </script>
 <style lang='less'>
-  #articleNode{
+  #articleNginx{
     width: 100%;
   }
 </style>

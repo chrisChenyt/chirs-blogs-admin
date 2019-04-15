@@ -170,6 +170,12 @@ let router = new Router({
           meta: { requireAuth: true }
         },
         {
+          path: '/nginx',
+          name: 'nginx',
+          component:() => import(/* webpackChunkName: "article" */ '@/views/nginx'),
+          meta: { requireAuth: true }
+        },
+        {
           path: '/work',
           name: 'work',
           component:() => import(/* webpackChunkName: "article" */ '@/views/work'),
