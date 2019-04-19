@@ -9,6 +9,7 @@ const user = require('../models/user');
 const bcrypt = require('bcryptjs');
 const redis = require("../config/redis");
 const expire = 60*60*24;// 设置redis过期时间为24小时
+
 const index = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
   const list = await blogModel.articleList(data.pageNum,data.pageSize) // 通过await “同步”地返回查询结果
@@ -197,15 +198,29 @@ const searchArticle = async function (ctx) {
   }
 }
 
+const addPv = async function (ctx) {
+  const data = ctx.request.body // post过来的数据存在request.body里
+  let article = await articleModel.articleFind(data.articleId)
+  let pvNum = parseInt(article.pv)+1
+  // 更新阅读量
+  await articleModel.pv(pvNum,data.articleId)
+  const con = await articleModel.articleFind(data.articleId)
+  const success = await pvModel.createPv(data)
+  ctx.body = {
+    success,
+    pv: con.pv
+  }
+}
+
 const articleShow = async function (ctx) {
   const data = ctx.request.body // post过来的数据存在request.body里
   let curId = data.articleId,
       nextId = parseInt(curId)+1,
       preId = parseInt(curId)-1
-  let article = await articleModel.articleFind(curId)
-  let pvNum = parseInt(article.pv)+1
+  // let article = await articleModel.articleFind(curId)
+  // let pvNum = parseInt(article.pv)+1
   // 更新阅读量
-  await articleModel.pv(pvNum,curId)
+  // await articleModel.pv(pvNum,curId)
   let pre_next = {}
   pre_next.next = await articleModel.articleFindNext(nextId)
   pre_next.pre = await articleModel.articleFindNext(preId)
@@ -327,14 +342,6 @@ const leaveMsg = async function (ctx) {
   }
 }
 
-const createPv = async function (ctx) {
-  const data = ctx.request.body // post过来的数据存在request.body里
-  const success = await pvModel.createPv(data)
-  ctx.body = {
-    success
-  }
-}
-
 const likeArticle = async function (ctx) {
   let data = ctx.request.body // post过来的数据存在request.body里
   const success = await likeModel.createLike(data)
@@ -448,9 +455,9 @@ module.exports =  {
   leaveMsg,
   leaveComment,
   likeArticle,
-  createPv,
   captcha,
   userLogin,
   register,
-  searchArticle
+  searchArticle,
+  addPv
 }

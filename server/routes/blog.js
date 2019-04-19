@@ -25,7 +25,7 @@ router.post('/articleList', article.articleList) // 文章列表
       .post('/msgReply', blogs.msgReply) // 留言回复
 
       .post('/likeArticle', blogs.likeArticle) // 文章点赞
-      .post('/createPv', blogs.createPv) // 文章浏览
+      .post('/addPv',blogs.addPv) // 文章浏览
 
       .get('/captcha', blogs.captcha) // 图形验证码
       .post('/login', blogs.userLogin) // 登录
