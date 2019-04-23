@@ -45,7 +45,7 @@
         data: {
           pageNum: 1,
           pageSize: this.pageSize,
-          articleTag: 'JavaScript'
+          articleTag: 'JS'
         },
         callback: (res) => {
           this.tableLoading = false
@@ -63,7 +63,7 @@
           data: {
             pageNum: 1,
             pageSize: this.pageSize,
-            articleTag: 'JavaScript'
+            articleTag: 'JS'
           },
           callback: (res) => {
             this.tableLoading = false
@@ -85,7 +85,7 @@
           method: 'POST',
           data: {
             articleId: row.articleId,
-            articleTag: 'JavaScript'
+            articleTag: 'JS'
           },
           callback: (res) => {
             this.tableLoading = false
@@ -115,7 +115,7 @@
           data: {
             pageNum: currentPage,
             pageSize: this.pageSize,
-            articleTag: 'JavaScript'
+            articleTag: 'JS'
           },
           callback: (res) => {
             this.tableLoading = false
@@ -132,7 +132,7 @@
           data: {
             pageNum: currentPage,
             pageSize: this.pageSize,
-            articleTag: 'JavaScript'
+            articleTag: 'JS'
           },
           callback: (res) => {
             this.tableLoading = false
@@ -150,7 +150,7 @@
           data: {
             pageNum: 1,
             pageSize: pageSize,
-            articleTag: 'JavaScript'
+            articleTag: 'JS'
           },
           callback: (res) => {
             this.tableLoading = false
