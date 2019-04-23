@@ -15,7 +15,7 @@ const articleList = async function (pageNum,pageSize) {
     where: {
       publish: 'true'
     },
-    attributes: ['articleId','title','abstract','tag','tag1','tag2','likeNum','pv','commentNum','date']
+    attributes: ['articleId','title','abstract','original','tag','tag1','tag2','likeNum','pv','commentNum','date']
   }).then(res => {
     let result = {};
     result.data = res.rows;
@@ -157,7 +157,7 @@ const articleListType = async function (pageNum,pageSize,articleType,order) {
       publish: 'true',
       type: articleType
     },
-    attributes: ['title','tag','tag1','tag2','articleId','abstract','date']
+    attributes: ['title','tag','tag1','tag2','articleId','original','abstract','date']
   }).then(res => {
     let result = {};
     result.data = res.rows;

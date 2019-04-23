@@ -15,7 +15,7 @@ const articleList = async function (pageNum,pageSize) {
     where: {
       publish: 'true'
     },
-    attributes: ['title','tag','tag1','tag2','articleId','abstract','date']
+    attributes: ['title','tag','tag1','tag2','original','articleId','abstract','date']
   }).then(res => {
     let result = {};
     result.data = res.rows;
