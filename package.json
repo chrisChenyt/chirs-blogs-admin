@@ -9,7 +9,7 @@
     "server": "nodemon -w app.js -w server server-entry.js",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
-    "build": "node build/build.js"
+    "build": "node --max_old_space_size=8000 build/build.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
